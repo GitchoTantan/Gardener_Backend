@@ -1,10 +1,6 @@
 # Gardener
 > 깃허브의 커밋수를 시각적으로 표현하여 코딩의 습관을 잡아주는 플렛폼
 
-[![NPM Version][npm-image]][npm-url]
-[![Build Status][travis-image]][travis-url]
-[![Downloads Stats][npm-downloads]][npm-url]
-
 ![](../header.png)
 
 ## 설치 방법
