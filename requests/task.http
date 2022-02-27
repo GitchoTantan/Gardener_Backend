@@ -1,6 +1,6 @@
-@api = http://localhost:3000/github
+@api = http://localhost:3000/user
 
-GET {{api}}/2
+GET {{api}}/1
 
 ###
 POST {{api}}
@@ -17,4 +17,4 @@ DELETE {{api}}/3
 GET {{api}}/commit/rineeee
 
 ###
-Get {{api}}/topRepo
+Get {{api}}/commit

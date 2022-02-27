@@ -1,17 +1,11 @@
 import { Router } from 'express';
-import { getChallenge, getChallengeCount, getChallenges, deleteChallenge, saveChallenge } from '../controllers/challenge';
+import {saveChallenge,participationChallenge,getParticipationChallenge,getChallenge,challengeGarden} from '../controllers/challenge';
 
 const router = Router();
 
-router.get('/challenge', getChallenges);
-
-router.get('/challenge/count', getChallengeCount);
-
-router.get('/challenge/:id', getChallenge);
-
-router.delete('/challenges/:id', deleteChallenge);
-
-router.post('/challenge', saveChallenge);
+//router.post('/challenge', saveChallenge);
+router.post('/challenge', challengeGarden);
+//router.get('/challenge/:id', getChallenge);
 
 
 export default router;
