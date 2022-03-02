@@ -10,7 +10,7 @@ export const getUser = async(req, res) => {
 
 export const saveUser = async(req, res) => {
     const connection = await connect();
-    const [results] = await connection.query("INSERT INTO user(nickname,exp,email,tierId,totalcommit) VALUES (0,0,1,1,0)")
+    const [results] = await connection.query("INSERT INTO user(nickname,exp,email,tierId,totalCommit,todayCommit) VALUES (0,0,1,1,0,0)")
     res.json({ 
        id: results.insertId,
        ...req.body,

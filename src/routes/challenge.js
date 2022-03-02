@@ -3,8 +3,8 @@ import {saveChallenge,participationChallenge,getParticipationChallenge,getChalle
 
 const router = Router();
 
-//router.post('/challenge', saveChallenge);
-router.post('/challenge', challengeGarden);
+router.post('/challenge', saveChallenge);
+//router.post('/challenge', challengeGarden);
 //router.get('/challenge/:id', getChallenge);
 
 

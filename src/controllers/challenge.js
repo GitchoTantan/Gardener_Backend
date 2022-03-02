@@ -18,9 +18,19 @@ export const getChallenge = async(req, res) => {
 
 export const saveChallenge = async (req, res) => {
     const connection = await connect();
-    const [results] = await connection.query("INSERT INTO challenge(createdAt) VALUES (NOW())")
+    const [results] = await connection.query("INSERT INTO challenge(title,description,userId,imgUrl,createdAt) VALUES (?,?,?,?,NOW())",[
+        req.body.title, 
+        req.body.description, 
+        req.body.userId, 
+        req.body.imgUrl, 
+    ])
+    const [results2] = await connection.query("INSERT INTO challengeintermediate(challengeId,userId,createdAt) VALUES (?,?,NOW())",[
+        results.insertId,
+        req.body.userId
+    ])
     res.json({ 
        id: results.insertId,
+       id2: results2.insertId,
        ...req.body,
     })
 }

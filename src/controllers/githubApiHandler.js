@@ -1,11 +1,11 @@
 const axios = require("axios");
+import { connect } from '../database'
 
 const KR_TIME_DIFF = 9 * 60 * 60 * 1000;
 const ONE_DAY = 24 * 60 * 60 * 1000;
 
 export const getCommitsFromActions = async (userName, days) => {
   const from = new Date(new Date() - days * ONE_DAY);
-
   const response = await axios.get(
     `https://api.github.com/users/${userName}/events?per_page=100&page=1`
   );
@@ -77,6 +77,32 @@ export const getTopRepositories = async (req, res) => {
 };
 
 export const getCommits = async (req, res) => {
-  const response = await getDailyCommits("rineeee", 365)
+  const response = await getDailyCommits("Tarakyu", 0.5)
   res.send(response);
+};
+
+export const getChallengeCommit = async (req, res) => {
+  const connection = await connect();
+  const [userCommit] = await connection.query('SELECT userId,nickname FROM user');
+  userCommit.forEach(async (content) => {
+    const response = await getDailyCommits(content.nickname, 0.5)
+    try {
+      if(response[0].count){
+        await connection.query("UPDATE user SET todayCommit = '1' WHERE userId =?",[content.userId])
+      }
+    } catch (error) {
+      await connection.query("UPDATE user SET todayCommit = '0' WHERE userId =?",[content.userId])
+    }
+  })
+  /*
+  await connection.query("INSERT INTO user(todayCommit) VALUES (?)",[
+
+  ])
+  console.log(userCommit[0].nickname)
+  const [rows] = await connection.query('SELECT challengeId,userId FROM challengeintermediate');
+  console.log(rows)
+  const response = await getDailyCommits("rineeee", 1)
+  console.log(response)
+  res.send(response);
+  */
 };
