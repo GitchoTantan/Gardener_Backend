@@ -7,7 +7,7 @@ const ONE_DAY = 24 * 60 * 60 * 1000;
 export const getCommitsFromActions = async (userName, days) => {
   const from = new Date(new Date() - days * ONE_DAY);
   const response = await axios.get(
-    `https://api.github.com/users/${userName}/events?per_page=100&page=1`
+    `https://api.github.com/users/${userName}/events/?per_page=100&page=1`
   );
   const pushActions = response.data
     .filter((action) => {
@@ -77,7 +77,7 @@ export const getTopRepositories = async (req, res) => {
 };
 
 export const getCommits = async (req, res) => {
-  const response = await getDailyCommits("Tarakyu", 0.5)
+  const response = await getDailyCommits("rineeee", 30)
   res.send(response);
 };
 
@@ -105,4 +105,15 @@ export const getChallengeCommit = async (req, res) => {
   console.log(response)
   res.send(response);
   */
+};
+
+export const getCommitsTest = async (req, res) => {
+  try {
+    const response = await axios.get(
+      `https://api.github.com/repos/GitchoTantan/Gardener/commits`
+      );
+      console.log(response);
+  } catch (error) {
+    console.error(error);
+  }
 };
