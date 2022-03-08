@@ -69,13 +69,3 @@ export const acceptChallenge = async (req, res) => {
     res.sendStatus(204);
 }
  
-export const challengeGarden = async (req, res) => {
-    const connection = await connect();
-    const date1 = 1
-    const date2 = 0
-    await connection.query("INSERT INTO challengedetail(challengeId,datetime,isDone) VALUES (?,NOW(),?)",[
-       date1, 
-       date2, 
-    ])
-    res.sendStatus(204);
-}

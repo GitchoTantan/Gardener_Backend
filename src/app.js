@@ -8,6 +8,7 @@ import { options } from "./swaggerOptions";
 
 import challengeRoutes from './routes/challenge';
 import githubApiHandlerRoutes from './routes/githubApiHandler';
+import githubApiChallengeRoutes from './routes/githubApiChallenge';
 import mailRoutes from './routes/mail';
 import userRoutes from './routes/user';
 
@@ -46,6 +47,7 @@ app.use(morgan("dev"));
 app.use(express.json());
 
 app.use(challengeRoutes);
+app.use(githubApiChallengeRoutes);
 app.use(githubApiHandlerRoutes);
 app.use(mailRoutes);
 app.use(userRoutes);
