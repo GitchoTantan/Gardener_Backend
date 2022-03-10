@@ -78,7 +78,7 @@ export const getTopRepositories = async (req, res) => {
 
 export const getCommits = async (req, res) => {
   try{
-  const response = await getDailyCommits("rineeee", 30)
+  const response = await getDailyCommits("rineeee", 0.5)
   res.send(response);
   } catch (error) {
     console.log(error); 
@@ -97,5 +97,34 @@ export const getChallengeCommit = async (req, res) => {
     } catch (error) {
       await connection.query("UPDATE user SET todayCommit = '0' WHERE userId =?",[content.userId])
     }
+  })
+};
+
+export const updateChallengeGarden = async (req, res) => {
+  const connection = await connect();
+  var check = 0
+  const [challenges] = await connection.query('SELECT challengeId FROM challenge');
+  challenges.forEach(async (content) => {
+      const [challengesDetail] = await connection.query('SELECT userId,repo FROM challengeintermediate WHERE challengeId =?',[content.challengeId])
+      challengesDetail.forEach(async (action) => {
+        const [name] = await connection.query('SELECT nickname FROM user WHERE userId =?',[action.userId])
+        check = 0
+        try {
+          const response = await getDailyCommits(name[0].nickname, 0.5)
+          if(response[0].count){ 
+            response[0].commits.forEach(async (repocheck) => { 
+              if(repocheck.repo==action.repo){
+                check = check + 1
+                //return false
+              }
+            })
+          }
+        } catch (error) {
+          console.log("no")
+        }
+      })
+      if( check ==challengesDetail.length ){
+        console.log("good")
+      }
   })
 };
