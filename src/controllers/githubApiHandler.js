@@ -105,26 +105,31 @@ export const updateChallengeGarden = async (req, res) => {
   var check = 0
   const [challenges] = await connection.query('SELECT challengeId FROM challenge');
   challenges.forEach(async (content) => {
+      try{
+      await connection.query("UPDATE challengedetail SET datetime = NOW(),isDone = '0' WHERE challengeId =?",[content.challengeId])
+      } catch(error) {console.log("shit")}
       const [challengesDetail] = await connection.query('SELECT userId,repo FROM challengeintermediate WHERE challengeId =?',[content.challengeId])
       challengesDetail.forEach(async (action) => {
         const [name] = await connection.query('SELECT nickname FROM user WHERE userId =?',[action.userId])
-        check = 0
         try {
           const response = await getDailyCommits(name[0].nickname, 0.5)
           if(response[0].count){ 
             response[0].commits.forEach(async (repocheck) => { 
+              check = 0
               if(repocheck.repo==action.repo){
                 check = check + 1
-                //return false
+                return false
               }
             })
           }
         } catch (error) {
           console.log("no")
         }
+        if( check ==challengesDetail.length ){
+          try{
+          await connection.query("UPDATE challengedetail SET isDone = '1' WHERE challengeId =?",[ content.challengeId])
+          } catch(error) {}
+        }
       })
-      if( check ==challengesDetail.length ){
-        console.log("good")
-      }
   })
 };
