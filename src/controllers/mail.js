@@ -1,43 +1,32 @@
 const nodemailer = require('nodemailer');
 
-module.exports = async (req, res,next) => {
-  const { email, title, desc, username } = req.body; 
-  console.log(email);
-  try {
-    let transporter = nodemailer.createTransport({
-      service: 'gmail',
-      host: 'smtp.gmail.com', 
-      port: 587,
+export const mailSender = {
+  sendGmail: function(param) {
+    var transporter = nodemailer.createTransport({
+      service: "gmail",
+      prot: 587,
+      host: "smtp.gmlail.com",
       secure: false,
+      requireTLS: true,
       auth: {
         user: process.env.GOOGLE_MAIL,
         pass: process.env.GOOGLE_PASSWORD,
-      },
+      }
     });
-    
-    // 보낼 메세지
-    let message = {
-      from: process.env.GOOGLE_MAIL,
-      to: email,
-      subject: title, 
-      html: `<div 
-      style='
-      text-align: center; 
-      width: 50%; 
-      height: 60%;
-      margin: 15%;
-      padding: 20px;
-      box-shadow: 1px 1px 3px 0px #999;
-      '>
-      <h2>${username} 님, 안녕하세요.</h2> <br/> <h2>제목: ${title}</h2> <br/>${desc} <br/><br/><br/><br/></div>`,
-    };
-    
 
-    transporter.sendMail(message, (err) => {
-      if (err) next(err);
-      else res.status(200).json({ isMailSucssessed: true});
+    var mailOptions = {
+      from: process.env.GOOGLE_MAIL,
+      to: param.toEmail,
+      subject: param.subject, 
+      text: param.text 
+    };
+
+    transporter.sendMail(mailOptions, function(error, info) {
+      if (error) {
+        console.log(error);
+      } else {
+        console.log("Email sent: " + info.response);
+      }
     });
-  } catch (err) {
-    next(err);
   }
 };

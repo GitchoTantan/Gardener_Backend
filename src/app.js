@@ -8,7 +8,6 @@ import { options } from "./swaggerOptions";
 
 import challengeRoutes from './routes/challenge';
 import githubApiHandlerRoutes from './routes/githubApiHandler';
-import mailRoutes from './routes/mail';
 import userRoutes from './routes/user';
 
 import { updateExpGroup } from './controllers/updateExp';
@@ -33,13 +32,8 @@ export const task = cron.schedule(
     "0 23 * * *",
     () => {
       updateExpGroup();
-    },
-    {
-      scheduled: false,
     }
   );
-  
-task.start();
 
 app.use(cors());
 app.use(morgan("dev"));
@@ -47,7 +41,6 @@ app.use(express.json());
 
 app.use(challengeRoutes);
 app.use(githubApiHandlerRoutes);
-app.use(mailRoutes);
 app.use(userRoutes);
 
 app.use('/docs', swaggerUI.serve, swaggerUI.setup(specs));
