@@ -2,10 +2,16 @@ import { connect } from '../database'
 
 export const getUser = async(req, res) => {
     const connection = await connect();
-    const [rows] = await connection.query('SELECT * FROM user WHERE userId = ?',[
+    const [usertable] = await connection.query('SELECT nickname,exp,tierId,totalCommit,flowerId FROM user WHERE userId = ?',[
         req.params.id
     ]);
-    res.json(rows[0]);  
+    res.json({
+        nickname: usertable[0].nickname,
+        exp:usertable[0].exp,
+        tierId: usertable[0].tierId,
+        totalCommit: usertable[0].totalCommit,
+        flowerId: usertable[0].flowerId,
+    })
 }
 
 export const saveUser = async(req, res) => {
@@ -16,3 +22,4 @@ export const saveUser = async(req, res) => {
        ...req.body,
     })
 }
+
