@@ -20,7 +20,7 @@ var upload = multer({storage: storage})
 
 router.post('/challenge', upload.single("image"), saveChallenge);
 router.get('/challenge/accept', acceptChallenge);
-//router.get('/challenge/:id', getChallenge);
+router.get('/challenge/:id', getChallenge);
 
 
 export default router;

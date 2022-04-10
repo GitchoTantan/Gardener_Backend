@@ -23,3 +23,10 @@ export const saveUser = async(req, res) => {
     })
 }
 
+export const updateTier = async(req, res) => {
+    const connection = await connect();
+    const [results] = await connection.query("SELECT userId,totalCommit,flowerId,exp FROM user")
+    results.forEach(async (content) => {
+       
+    })
+}

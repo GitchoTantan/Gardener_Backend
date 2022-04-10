@@ -31,7 +31,6 @@ export const getDailyCommits = async (userName, days) => {
   const pushActions = await getCommitsFromActions(userName, days);
   const dailyCommits = getDateList(new Date(new Date() - (days * ONE_DAY)), new Date());
   let idx = dailyCommits.length - 1;
-  console.log(pushActions)
   pushActions.forEach((action) => {
     const date = getStringDate(new Date(action.date));
     const commits = action.commits.map((commit) => {
@@ -96,7 +95,7 @@ export const getTopRepositories = async (req, res) => {
 
 export const getCommits = async (req, res) => {
   try{
-  const response = await getDailyCommits("Tarakyu", 3)
+  const response = await getDailyCommits("rineeee", 0.5)
   res.send(response);
   } catch (error) {
     console.log(error); 
@@ -110,14 +109,19 @@ export const getChallengeCommit = async (req, res) => {
   userCommit.forEach(async (content) => {
     const response = await getDailyCommits(content.nickname, 0.5)
     try {
-      if(response[0].count > 0){
-        await connection.query("UPDATE user SET todayCommit = '1' WHERE userId =?",[content.userId])
+      if(response[0].count != 0){
+        await connection.query("UPDATE user SET todayCommit = '1',totalCommit = totalCommit + ?,exp = exp + ?,seqCommit= seqCommit+1, WHERE userId =?",[
+          response[0].count,
+          response[0].count,
+          content.userId
+        ])
       } else{
-        await connection.query("UPDATE user SET todayCommit = '0' WHERE userId =?",[content.userId])
+        await connection.query("UPDATE user SET todayCommit = '0',seqCommit= '0', WHERE userId =?",[content.userId])
       }
     } catch (error) {
     }
   })
+  res.sendStatus(204);
 };
 
 //challenge 의 각각 가든 채우기
@@ -134,7 +138,7 @@ export const updateChallengeGarden = async (req, res) => {
         const [name] = await connection.query('SELECT nickname FROM user WHERE userId =?',[action.userId])
         try {
           const response = await getDailyCommits(name[0].nickname, 0.5)
-          if(response[0].count > 0){ 
+          if(response[0].count != 0){ 
             response[0].commits.forEach(async (repocheck) => { 
               check = 0
               if(repocheck.repo==action.repo){

@@ -5,7 +5,7 @@ const router = Router();
 
 router.get('/github/topRepo',  getTopRepositories);
 router.get('/github/commit',  updateChallengeGarden);
-//router.get('/github/Commit',  getChallengeCommit);
+router.put('/github/commit/today',  getChallengeCommit);
 router.get('/github/commit/get',  getCommits);
 
 export default router;

@@ -1,19 +1,45 @@
 import { connect } from '../database'
+import {getDailyCommits} from './githubApiHandler';
+const delay = require('delay');
 
+//챌린지 이름,사진,생성시간,한줄,유저 정보
 export const getChallenge = async(req, res) => {
     const connection = await connect();
+    const [user] = await connection.query('SELECT userId FROM challengeintermediate WHERE challengeId = ?',[
+        req.params.id
+    ]);
+    const userDetail = []
+    const userGarden = []
+    user.forEach(async (content) => { 
+        const [temp] = await connection.query('SELECT nickname,tierId,flowerId FROM user WHERE userId = ?',[
+            content.userId
+        ]); 
+        const response = await getDailyCommits(temp[0].nickname ,7)
+        const l1 = userDetail.push(temp)
+        const l2 = userGarden.push(response)
+    })
     const [rows] = await connection.query('SELECT * FROM challenge WHERE challengeId = ?',[
         req.params.id
     ]);
-   res.json({
-       id: rows[0].challengeId,
-       title: rows[0].title,
-       description: rows[0].description,
-       createdAt: rows[0].createdAt,
-       admin : rows[0].userId,
-       imgUrl: rows[0].imgUrl
+
+    const [date] = await connection.query('SELECT datetime,isDone FROM challengedetail WHERE challengeId = ?',[
+        req.params.id
+    ]);
+    await delay(500);
+
+    res.json({
+    id: rows[0].challengeId,
+    title: rows[0].title,
+    description: rows[0].description,
+    createdAt: rows[0].createdAt,
+    admin : rows[0].userId,
+    imgUrl: rows[0].imgUrl,
+    participateuser: userDetail,
+    usergarden: userGarden,
+    date: date
    })
 }
+
 
 export const saveChallenge = async (req, res) => {
     try{
