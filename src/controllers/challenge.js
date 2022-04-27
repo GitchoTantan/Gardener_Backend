@@ -14,6 +14,7 @@ export const getChallenge = async(req, res) => {
         const [temp] = await connection.query('SELECT nickname,tierId,flowerId FROM user WHERE userId = ?',[
             content.userId
         ]); 
+        
         const response = await getDailyCommits(temp[0].nickname ,7)
         const l1 = userDetail.push(temp)
         const l2 = userGarden.push(response)
@@ -65,20 +66,28 @@ export const saveChallenge = async (req, res) => {
 }
 }
 
-export const deleteBadge = async (req, res) => {
+export const getBadge = async (req, res) => {
     const connection = await connect();
-    await connection.query("DELETE FROM badge WHERE badgeId =1")
-    res.sendStatus(204);
+    try {
+        const [rows] = await connection.query('SELECT badgeId FROM badgeintermediate WHERE userId = ?',[
+            req.params.id
+        ]);
+        res.json(rows[0]); 
+    } catch (error) {
+        console.log(error)
+    } 
 }
 
 export const participationChallenge = async (req, res) => {
     const connection = await connect();
+    try{
     await connection.query("INSERT INTO pendingrequests(challengeId,userId,repo,createdAt) VALUES (?,?,?,NOW())",[
        req.body.challengeId, 
        req.body.userId, 
        req.body.repo
     ])
     res.sendStatus(204);
+    }catch(err) { console.log(err)}
 }
 
 export const getParticipationChallenge = async (req, res) => {
