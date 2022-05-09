@@ -5,39 +5,71 @@ const delay = require('delay');
 //챌린지 이름,사진,생성시간,한줄,유저 정보
 export const getChallenge = async(req, res) => {
     const connection = await connect();
+    var totalJson = new Array();
+    var challenge = new Object();
+    var members = new Array();
+    var checkbool;
+    var boolisleader= false;
+    var boolismember = false;
+    const [coming] = await connection.query('SELECT userId FROM user WHERE nickname = ?',[
+        req.body.nickname
+    ]);
+    const [challengerow] = await connection.query('SELECT * FROM challenge WHERE challengeId = ?',[
+        req.params.id
+    ]);
+    
+    challenge.profileImgURL = challengerow[0].imgUrl;
+    challenge.name = challengerow[0].title;
+    challenge.date = challengerow[0].createdAt;
+    challenge.introductionMsg = challengerow[0].description;
+
+    challenge = JSON.stringify(challenge);
+
     const [user] = await connection.query('SELECT userId FROM challengeintermediate WHERE challengeId = ?',[
         req.params.id
     ]);
-    const userDetail = []
-    const userGarden = []
+
     user.forEach(async (content) => { 
-        const [temp] = await connection.query('SELECT nickname,tierId,flowerId FROM user WHERE userId = ?',[
+        if (coming[0].userId === content.userId) {
+            boolismember = true;
+        }
+        const [temp] = await connection.query('SELECT nickname,tierId,flowerId,mbti FROM user WHERE userId = ?',[
             content.userId
         ]); 
-        
-        const response = await getDailyCommits(temp[0].nickname ,7)
-        const l1 = userDetail.push(temp)
-        const l2 = userGarden.push(response)
+        const response = await getDailyCommits(temp[0].nickname ,0.6)
+        if(challengerow[0].userId != content.userId){
+            checkbool= false;
+       }else{
+            if(content.userId == coming[0].userId){
+                boolisleader = true
+            }
+            checkbool= true;
+       }
+       var membersTemp = new Object();
+        membersTemp.memberId = content.userId;
+        membersTemp.profileImgURL ="경로 어떻게할지 미정";
+        membersTemp.devType = temp[0].mbti;
+        membersTemp.name = temp[0].nickname;
+        membersTemp.Tier = {"tierType":temp[0].tierId,"tierNum":temp[0].flowerId };
+        membersTemp.isLeader = checkbool;
+
+       if(response[0].count != 0){
+           checkbool= true;
+       }else{
+            checkbool= false;
+       }
+        membersTemp.todayCommit = checkbool;
+        members.push(membersTemp);
     })
-    const [rows] = await connection.query('SELECT * FROM challenge WHERE challengeId = ?',[
-        req.params.id
-    ]);
-
-    const [date] = await connection.query('SELECT datetime,isDone FROM challengedetail WHERE challengeId = ?',[
-        req.params.id
-    ]);
+    
     await delay(500);
-
+    totalJson.push(JSON.parse(challenge));
+  
     res.json({
-    id: rows[0].challengeId,
-    title: rows[0].title,
-    description: rows[0].description,
-    createdAt: rows[0].createdAt,
-    admin : rows[0].userId,
-    imgUrl: rows[0].imgUrl,
-    participateuser: userDetail,
-    usergarden: userGarden,
-    date: date
+    challenge: totalJson[0],
+    isMemeber: boolismember,
+    isLeader: boolisleader,
+    members: members,
    })
 }
 
