@@ -7,5 +7,5 @@ var emailParam = {
   };
 
  export const updateExpGroup = async (req, res) => {
-    mailSender.sendGmail(emailParam);
+    mailSender.sendNmail(emailParam);
 }

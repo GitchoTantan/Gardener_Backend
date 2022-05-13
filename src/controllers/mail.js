@@ -1,21 +1,21 @@
 const nodemailer = require('nodemailer');
 
 export const mailSender = {
-  sendGmail: function(param) {
+  sendNmail: function(param) {
     var transporter = nodemailer.createTransport({
-      service: "gmail",
+      service: "Naver",
       prot: 587,
-      host: "smtp.gmlail.com",
+      host: "smtp.naver.com",
       secure: false,
       requireTLS: true,
       auth: {
-        user: process.env.GOOGLE_MAIL,
-        pass: process.env.GOOGLE_PASSWORD,
+        user: process.env.NAVER_MAIL,
+        pass: process.env.NAVER_PASSWORD,
       }
     });
 
     var mailOptions = {
-      from: process.env.GOOGLE_MAIL,
+      from: process.env.NAVER_MAIL,
       to: param.toEmail,
       subject: param.subject, 
       text: param.text 

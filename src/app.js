@@ -9,8 +9,9 @@ import { options } from "./swaggerOptions";
 import challengeRoutes from './routes/challenge';
 import githubApiHandlerRoutes from './routes/githubApiHandler';
 import userRoutes from './routes/user';
+import mailRoutes from './routes/mail';
 
-import { updateExpGroup } from './controllers/updateExp';
+//import { updateExpGroup } from './controllers/updateExp';
 
 const cron = require("node-cron");
 
@@ -31,7 +32,7 @@ const router = AdminBroExpress.buildRouter(adminBro)
 export const task = cron.schedule(
     "0 23 * * *",
     () => {
-      updateExpGroup();
+    //  updateExpGroup();
     }
   );
 
@@ -42,6 +43,7 @@ app.use(express.json());
 app.use(challengeRoutes);
 app.use(githubApiHandlerRoutes);
 app.use(userRoutes);
+app.use(mailRoutes);
 
 app.use('/docs', swaggerUI.serve, swaggerUI.setup(specs));
 
