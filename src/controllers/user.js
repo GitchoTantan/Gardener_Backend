@@ -7,6 +7,7 @@ export const getUserPage = async(req, res) => {
     var profile = new Object();
     var todaycommit = true;
     const challengeArray = []
+
     const [challenged] = await connection.query('SELECT challengeId FROM challengeintermediate WHERE userId = ?',[
         req.params.id
     ]);
@@ -33,9 +34,25 @@ export const getUserPage = async(req, res) => {
         totalJson.push(challengesTemp);
     })
     
-    const [usertable] = await connection.query('SELECT nickname,exp,tierId,totalCommit,flowerId,mbti FROM user WHERE userId = ?',[
+    const [usertable2] = await connection.query('SELECT nickname,exp FROM user WHERE userId = ?',[
         req.params.id
     ]);
+
+    const response = await getDailyCommits( usertable2[0].nickname ,0.6)
+
+    if(response2[0].count != 0) {
+         try{
+          await connection.query("UPDATE user SET exp = ? WHERE userId =?",[ 
+              usertable2[0].exp+response[0].count,
+              req.params.id
+            ])
+          } catch{}
+    }
+
+       const [usertable] = await connection.query('SELECT nickname,exp,tierId,totalCommit,flowerId,mbti FROM user WHERE userId = ?',[
+        req.params.id
+    ]);
+
 
     profile.Id = req.params.id;
     profile.nickname = usertable[0].nickname;
