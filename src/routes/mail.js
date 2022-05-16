@@ -10,7 +10,7 @@ var emailParam = {
   };
 
 
-router.put('/mail', function(req, res){
+router.put('/api/mail', function(req, res){
   mailSender.sendNmail(emailParam);
   res.sendStatus(204);
 }); 

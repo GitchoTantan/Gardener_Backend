@@ -12,7 +12,7 @@ export const getChallenge = async(req, res) => {
     var boolisleader= false;
     var boolismember = false;
     const [coming] = await connection.query('SELECT userId FROM user WHERE nickname = ?',[
-        req.body.nickname
+        "rineeee",
     ]);
     const [challengerow] = await connection.query('SELECT * FROM challenge WHERE challengeId = ?',[
         req.params.id
@@ -50,7 +50,7 @@ export const getChallenge = async(req, res) => {
         membersTemp.profileImgURL ="경로 어떻게할지 미정";
         membersTemp.devType = temp[0].mbti;
         membersTemp.name = temp[0].nickname;
-        membersTemp.Tier = {"tierType":temp[0].tierId,"tierNum":temp[0].flowerId };
+        membersTemp.tier = {"tierType":temp[0].tierId,"tierNum":temp[0].flowerId };
         membersTemp.isLeader = checkbool;
 
        if(response[0].count != 0){
@@ -64,10 +64,13 @@ export const getChallenge = async(req, res) => {
     
     await delay(500);
     totalJson.push(JSON.parse(challenge));
+
+    members = JSON.stringify(members);
+    members = JSON.parse(members)
   
     res.json({
     challenge: totalJson[0],
-    isMemeber: boolismember,
+    isMember: boolismember,
     isLeader: boolisleader,
     members: members,
    })

@@ -1,11 +1,13 @@
 import { connect } from '../database'
+import {getDailyCommits} from './githubApiHandler';
 const delay = require('delay');
 
 export const getUserPage = async(req, res) => {
     const connection = await connect();
     var totalJson = new Array();
+    var totalprofile = new Array();
     var profile = new Object();
-    var todaycommit = true;
+   // var todaycommit = true;
     const challengeArray = []
 
     const [challenged] = await connection.query('SELECT challengeId FROM challengeintermediate WHERE userId = ?',[
@@ -20,6 +22,7 @@ export const getUserPage = async(req, res) => {
         challengesTemp.challengeId = detail.challengeId
         challengesTemp.challengeImgURL = temp2[0].imgUrl
         challengesTemp.challengeTitle = temp2[0].title
+        /*
         try{
         const [temp3] = await connection.query('SELECT isDone FROM challengedetail WHERE (challengeId = ?) and (datetime = now())',[
             detail.challengeId
@@ -31,6 +34,7 @@ export const getUserPage = async(req, res) => {
             todaycommit = false;
         }
         challengesTemp.todayCommit = todaycommit
+        */
         totalJson.push(challengesTemp);
     })
     
@@ -40,12 +44,18 @@ export const getUserPage = async(req, res) => {
 
     const response = await getDailyCommits( usertable2[0].nickname ,0.6)
 
-    if(response2[0].count != 0) {
+    if(response[0].count != 0) {
          try{
+             var num =  usertable2[0].exp+response[0].count;
           await connection.query("UPDATE user SET exp = ? WHERE userId =?",[ 
-              usertable2[0].exp+response[0].count,
+              num,
               req.params.id
             ])
+            if(usertable2[0].exp+response[0].count > 0){
+                await connection.query("UPDATE user SET tierId=2,flowerId=2 WHERE userId =?",[ 
+              req.params.id
+            ])
+            }
           } catch{}
     }
 
@@ -63,8 +73,14 @@ export const getUserPage = async(req, res) => {
     
     await delay(500);
 
+    profile = JSON.stringify(profile);
+    totalprofile.push(JSON.parse(profile));
+
+    totalJson = JSON.stringify(totalJson);
+    totalJson = JSON.parse(totalJson)
+
     res.json({
-       profile: profile,
+       profile: totalprofile[0],
        challenges : totalJson
     })
 }

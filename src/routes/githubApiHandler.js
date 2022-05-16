@@ -3,9 +3,9 @@ import { getCommits, getTopRepositories, getChallengeCommit, updateChallengeGard
 
 const router = Router();
 
-router.get('/github/topRepo',  getTopRepositories);
-router.get('/github/commit',  updateChallengeGarden);
-router.put('/github/commit/today',  getChallengeCommit);
-router.get('/github/commit/get',  getCommits);
+router.get('/api/github/topRepo',  getTopRepositories);
+router.get('/api/github/commit',  updateChallengeGarden);
+router.put('/api/github/commit/today',  getChallengeCommit);
+router.get('/api/github/commit/get',  getCommits);
 
 export default router;

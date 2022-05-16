@@ -3,9 +3,9 @@ import { getUserPage, saveUser } from '../controllers/user';
 
 const router = Router();
 
-router.get('/user/:id', getUserPage);
+router.get('/api/user/:id', getUserPage);
 
-router.post('/user', saveUser);
+router.post('/api/user', saveUser);
 
 
 export default router;

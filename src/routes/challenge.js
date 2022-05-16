@@ -18,10 +18,10 @@ var storage = multer.diskStorage({
 var upload = multer({storage: storage})
 
 
-router.post('/challenge', upload.single("image"), saveChallenge);
-router.put('/challenge/accept', acceptChallenge);
-router.get('/challenge/:id', getChallenge);
-router.put('/challenge/participate', participationChallenge);
-router.get('/badge/:id', getBadge);
+router.post('/api/challenge', upload.single("image"), saveChallenge);
+router.put('/api/challenge/accept', acceptChallenge);
+router.get('/api/challenge/:id', getChallenge);
+router.put('/api/challenge/participate', participationChallenge);
+router.get('/api/badge/:id', getBadge);
 
 export default router;
