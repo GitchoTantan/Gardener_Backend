@@ -7,7 +7,6 @@ export const getUserPage = async(req, res) => {
     var totalJson = new Array();
     var totalprofile = new Array();
     var profile = new Object();
-   // var todaycommit = true;
     const challengeArray = []
 
     const [challenged] = await connection.query('SELECT challengeId FROM challengeintermediate WHERE userId = ?',[
@@ -22,19 +21,6 @@ export const getUserPage = async(req, res) => {
         challengesTemp.challengeId = detail.challengeId
         challengesTemp.challengeImgURL = temp2[0].imgUrl
         challengesTemp.challengeTitle = temp2[0].title
-        /*
-        try{
-        const [temp3] = await connection.query('SELECT isDone FROM challengedetail WHERE (challengeId = ?) and (datetime = now())',[
-            detail.challengeId
-        ])
-        if(temp3[0].isDone == 0){
-            todaycommit = false;
-        }
-        }catch(e){
-            todaycommit = false;
-        }
-        challengesTemp.todayCommit = todaycommit
-        */
         totalJson.push(challengesTemp);
     })
     
@@ -46,16 +32,13 @@ export const getUserPage = async(req, res) => {
 
     if(response[0].count != 0) {
          try{
-             var num =  usertable2[0].exp+response[0].count;
-          await connection.query("UPDATE user SET exp = ? WHERE userId =?",[ 
-              num,
+          await connection.query("UPDATE user SET exp = 0 WHERE userId =?",[ 
               req.params.id
             ])
-            if(usertable2[0].exp+response[0].count > 0){
-                await connection.query("UPDATE user SET tierId=2,flowerId=2 WHERE userId =?",[ 
+                await connection.query("UPDATE user SET tierId='purple',flowerId=1 WHERE userId =?",[ 
               req.params.id
             ])
-            }
+            
           } catch{}
     }
 

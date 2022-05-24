@@ -12,7 +12,7 @@ export const getChallenge = async(req, res) => {
     var boolisleader= false;
     var boolismember = false;
     const [coming] = await connection.query('SELECT userId FROM user WHERE nickname = ?',[
-        "rineeee",
+        "yunseonyeong",
     ]);
     const [challengerow] = await connection.query('SELECT * FROM challenge WHERE challengeId = ?',[
         req.params.id
@@ -25,7 +25,7 @@ export const getChallenge = async(req, res) => {
 
     challenge = JSON.stringify(challenge);
 
-    const [user] = await connection.query('SELECT userId FROM challengeintermediate WHERE challengeId = ?',[
+    const [user] = await connection.query('SELECT userId,repo FROM challengeintermediate WHERE challengeId = ?',[
         req.params.id
     ]);
 
@@ -52,6 +52,7 @@ export const getChallenge = async(req, res) => {
         membersTemp.name = temp[0].nickname;
         membersTemp.tier = {"tierType":temp[0].tierId,"tierNum":temp[0].flowerId };
         membersTemp.isLeader = checkbool;
+        membersTemp.repoUrl = content.repo;
 
        if(response[0].count != 0){
            checkbool= true;
@@ -116,10 +117,15 @@ export const getBadge = async (req, res) => {
 export const participationChallenge = async (req, res) => {
     const connection = await connect();
     try{
-    await connection.query("INSERT INTO pendingrequests(challengeId,userId,repo,createdAt) VALUES (?,?,?,NOW())",[
+        /*
+    await connection.query("INSERT INTO challengeintermediate(challengeId,userId,repo,createdAt) VALUES (?,?,?,NOW())",[
        req.body.challengeId, 
        req.body.userId, 
        req.body.repo
+    ])
+    */
+    await connection.query("INSERT INTO challengeintermediate(challengeId,userId,repo,createdAt) VALUES (2,2,?,NOW())",[
+       "https://github.com/yunseonyeong/LonelyAlgorithm/commits/master"
     ])
     res.sendStatus(204);
     }catch(err) { console.log(err)}

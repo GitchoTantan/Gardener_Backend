@@ -4,9 +4,15 @@ import {mailSender} from '../controllers/mail';
 const router = Router();
 
 var emailParam = {
-    toEmail: "icecandy1256@gmail.com",
-    subject: "메일 테스트",
-    text: "메일 내용"
+    toEmail: "99yunsy@naver.com",
+    subject: "[정원사]윤선영님이 김하린님을 콕 찔렀습니다.",
+    text: "어서 커밋 해 주세요"
+  };
+
+  var emailParam2 = {
+    toEmail: "tngur1101@naver.com",
+    subject: "[정원사] 같이 캡스톤 해요~~",
+    text: "윤선영님이 캡스톤을 요청했어요"
   };
 
 
