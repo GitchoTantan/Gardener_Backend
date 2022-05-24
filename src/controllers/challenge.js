@@ -63,7 +63,7 @@ export const getChallenge = async(req, res) => {
         members.push(membersTemp);
     })
     
-    await delay(500);
+    await delay(900);
     totalJson.push(JSON.parse(challenge));
 
     members = JSON.stringify(members);
