@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import {saveChallenge,participationChallenge,getParticipationChallenge,getChallenge,acceptChallenge,getBadge} from '../controllers/challenge';
+import {saveChallenge,participationChallenge,getParticipationChallenge,getChallenge,acceptChallenge,getBadge,challengeGarden} from '../controllers/challenge';
 
 const router = Router();
 const multer = require("multer");
@@ -18,10 +18,11 @@ var storage = multer.diskStorage({
 var upload = multer({storage: storage})
 
 
-router.post('/api/challenge', upload.single("image"), saveChallenge);
+router.post('/api/challenge/post', upload.single("image"), saveChallenge);
 router.put('/api/challenge/accept', acceptChallenge);
 router.get('/api/challenge/:id', getChallenge);
 router.put('/api/challenge/participate', participationChallenge);
+router.get('/api/challenge', challengeGarden);
 router.get('/api/badge/:id', getBadge);
 
 export default router;

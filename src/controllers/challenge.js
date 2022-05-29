@@ -77,6 +77,42 @@ export const getChallenge = async(req, res) => {
    })
 }
 
+function getDatesStartToLast(startDate, lastDate) {
+	var regex = RegExp(/^\d{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$/);
+	if(!(regex.test(startDate) && regex.test(lastDate))) return "Not Date Format";
+	var result = [];
+	var curDate = new Date(startDate);
+	while(curDate <= new Date(lastDate)) {
+		result.push(curDate.toISOString().split("T")[0].slice(2,));
+		curDate.setDate(curDate.getDate() + 1);
+	}
+	return result;
+}
+
+function rand(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+export const challengeGarden = async (req,res) => {
+    var result =  getDatesStartToLast("2021-12-30","2022-05-30")
+    var garden = new Array();
+
+    for (var d = 0; d < 150; d++) {
+    var challengegarden = new Object();
+    challengegarden.date = result[d];
+    challengegarden.count = rand(0,1);
+    garden.push(challengegarden);
+    }
+
+   console.log(result[0])
+   res.json({
+    commitRows: garden,
+    maxCount: 5,
+    totalCount: 2000,
+   })
+
+
+}
 
 export const saveChallenge = async (req, res) => {
     try{
