@@ -7,9 +7,9 @@ const ONE_DAY = 24 * 60 * 60 * 1000;
 export const getCommitsFromActions = async (userName, days) => {
   const from = new Date(new Date() - days * ONE_DAY);
   const response = await axios.get(
-    `https://api.github.com/users/${userName}/events?per_page=100&page=1`, {
+    `https://api.github.com/users/${userName}/events?per_page=5&page=1`, {
   headers: {
-    Authorization: "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",
+    Authorization: "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",
   }, 
 });
   const pushActions = response.data
