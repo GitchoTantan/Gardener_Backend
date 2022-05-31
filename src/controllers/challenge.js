@@ -33,10 +33,10 @@ export const getChallenge = async(req, res) => {
         if (coming[0].userId === content.userId) {
             boolismember = true;
         }
-        const [temp] = await connection.query('SELECT nickname,tierId,flowerId,mbti FROM user WHERE userId = ?',[
+        const [temp] = await connection.query('SELECT profileImgURL,nickname,tierId,flowerId,mbti FROM user WHERE userId = ?',[
             content.userId
         ]); 
-        const response = await getDailyCommits(temp[0].nickname ,0.6)
+        const response = await getDailyCommits(temp[0].nickname ,0.1)
         if(challengerow[0].userId != content.userId){
             checkbool= false;
        }else{
@@ -47,7 +47,7 @@ export const getChallenge = async(req, res) => {
        }
        var membersTemp = new Object();
         membersTemp.memberId = content.userId;
-        membersTemp.profileImgURL ="경로 어떻게할지 미정";
+        membersTemp.profileImgURL =temp[0].profileImgURL;
         membersTemp.devType = temp[0].mbti;
         membersTemp.name = temp[0].nickname;
         membersTemp.tier = {"tierType":temp[0].tierId,"tierNum":temp[0].flowerId };
@@ -63,7 +63,7 @@ export const getChallenge = async(req, res) => {
         members.push(membersTemp);
     })
     
-    await delay(900);
+    await delay(1100);
     totalJson.push(JSON.parse(challenge));
 
     members = JSON.stringify(members);
@@ -83,7 +83,7 @@ function getDatesStartToLast(startDate, lastDate) {
 	var result = [];
 	var curDate = new Date(startDate);
 	while(curDate <= new Date(lastDate)) {
-		result.push(curDate.toISOString().split("T")[0].slice(2,));
+		result.push(curDate.toISOString().split("T")[0]);
 		curDate.setDate(curDate.getDate() + 1);
 	}
 	return result;

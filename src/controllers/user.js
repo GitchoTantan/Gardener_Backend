@@ -29,7 +29,9 @@ export const getUserPage = async(req, res) => {
         req.params.id
     ]);
 
-    const response = await getDailyCommits( usertable2[0].nickname ,0.6)
+    let response;
+
+    response = await getDailyCommits( usertable2[0].nickname ,0.6);   
 
     if(response[0].count != 0) {
          try{
