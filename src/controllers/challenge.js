@@ -28,8 +28,7 @@ export const getChallenge = async(req, res) => {
     const [user] = await connection.query('SELECT userId,repo FROM challengeintermediate WHERE challengeId = ?',[
         req.params.id
     ]);
-  //  var checkboola =[true, false,false];
-  //  var k= 0;
+
     user.forEach(async (content) => { 
         if (coming[0].userId === content.userId) {
             boolismember = true;
@@ -56,19 +55,15 @@ export const getChallenge = async(req, res) => {
         membersTemp.repoUrl = content.repo;
 
        if(response[0].count != 0){
-           checkbool= true
-          // checkbool= checkboola[k]
-         //  k= k+1
+           checkbool= true;
        }else{
-           checkbool = false
-          //  checkbool= checkboola[k]
-          // k= k+1
+            checkbool= false;
        }
         membersTemp.todayCommit = checkbool;
         members.push(membersTemp);
     })
     
-    await delay(1100);
+    await delay(900);
     totalJson.push(JSON.parse(challenge));
 
     members = JSON.stringify(members);
@@ -105,10 +100,10 @@ export const challengeGarden = async (req,res) => {
     for (var d = 0; d < 150; d++) {
     var challengegarden = new Object();
     challengegarden.date = result[d];
-    if(d%4==0 || d%3 == 0){
-    challengegarden.count = 1;
-    }else{
-    challengegarden.count = 0;
+    if (d % 4 == 0 || d % 3 == 0) {
+      challengegarden.count = 1;
+    } else {
+      challengegarden.count = 0;
     }
     garden.push(challengegarden);
     }
