@@ -31,12 +31,12 @@ export const getUserPage = async(req, res) => {
 
     let response;
 
-    response = await getDailyCommits( usertable2[0].nickname ,0.6);   
-
+    response = await getDailyCommits( usertable2[0].nickname ,0.4);   
+    await delay(100);
     if(response[0].count != 0) {
          try{
              boollevelup=true
-          await connection.query("UPDATE user SET exp = 0 WHERE userId =?",[ 
+          await connection.query("UPDATE user SET exp = 10 WHERE userId =?",[ 
               req.params.id
             ])
                 await connection.query("UPDATE user SET tierId='purple',flowerId=1 WHERE userId =?",[ 
@@ -44,7 +44,7 @@ export const getUserPage = async(req, res) => {
             ])
           } catch{}
     }
-
+    
        const [usertable] = await connection.query('SELECT nickname,exp,tierId,totalCommit,flowerId,mbti FROM user WHERE userId = ?',[
         req.params.id
     ]);

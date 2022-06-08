@@ -12,7 +12,7 @@ export const getChallenge = async(req, res) => {
     var boolisleader= false;
     var boolismember = false;
     const [coming] = await connection.query('SELECT userId FROM user WHERE nickname = ?',[
-        "yunseonyeong",
+        "rineeee",
     ]);
     const [challengerow] = await connection.query('SELECT * FROM challenge WHERE challengeId = ?',[
         req.params.id
@@ -28,9 +28,10 @@ export const getChallenge = async(req, res) => {
     const [user] = await connection.query('SELECT userId,repo FROM challengeintermediate WHERE challengeId = ?',[
         req.params.id
     ]);
-  //  var checkboola =[true, false,false];
-  //  var k= 0;
+    //var checkboola =[true, true,false];
+    //var k= 0;
     user.forEach(async (content) => { 
+        console.log(content.userId)
         if (coming[0].userId === content.userId) {
             boolismember = true;
         }
@@ -57,12 +58,12 @@ export const getChallenge = async(req, res) => {
 
        if(response[0].count != 0){
            checkbool= true
-          // checkbool= checkboola[k]
+         //  checkbool= checkboola[k]
          //  k= k+1
        }else{
-           checkbool = false
-          //  checkbool= checkboola[k]
-          // k= k+1
+          checkbool = false
+       // checkbool= checkboola[k]
+       // k= k+1
        }
         membersTemp.todayCommit = checkbool;
         members.push(membersTemp);
@@ -170,7 +171,7 @@ export const participationChallenge = async (req, res) => {
     ])
     */
     await connection.query("INSERT INTO challengeintermediate(challengeId,userId,repo,createdAt) VALUES (2,2,?,NOW())",[
-       "https://github.com/yunseonyeong/LonelyAlgorithm/commits/master"
+       "https://github.com/rineeee/Algorithm/commits/main"
     ])
     res.sendStatus(204);
     }catch(err) { console.log(err)}
