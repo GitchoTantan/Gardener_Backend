@@ -28,12 +28,8 @@ export const getChallenge = async(req, res) => {
     const [user] = await connection.query('SELECT userId,repo FROM challengeintermediate WHERE challengeId = ?',[
         req.params.id
     ]);
-<<<<<<< HEAD
     //var checkboola =[true, true,false];
     //var k= 0;
-=======
-
->>>>>>> ceed415c3c5d9063747649dbde8c9488134ca008
     user.forEach(async (content) => { 
         console.log(content.userId)
         if (coming[0].userId === content.userId) {
