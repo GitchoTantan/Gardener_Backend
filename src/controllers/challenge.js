@@ -61,7 +61,6 @@ export const getChallenge = async(req, res) => {
         membersTemp.repoUrl = content.repo;
 
        if(response[0].count != 0){
-<<<<<<< HEAD
            checkbool= true
          //  checkbool= checkboola[k]
          //  k= k+1
@@ -69,11 +68,6 @@ export const getChallenge = async(req, res) => {
           checkbool = false
        // checkbool= checkboola[k]
        // k= k+1
-=======
-           checkbool= true;
-       }else{
-            checkbool= false;
->>>>>>> ceed415c3c5d9063747649dbde8c9488134ca008
        }
         membersTemp.todayCommit = checkbool;
         members.push(membersTemp);
