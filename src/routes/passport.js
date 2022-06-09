@@ -15,7 +15,7 @@ passport.use(new GitHubStrategy({
     return done(null, profile);
 }
 ));
-
+// a
 passport.serializeUser(function(user,done) {
     done(null,user);
 })
