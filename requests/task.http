@@ -1,0 +1,20 @@
+@api = http://localhost:3000/user
+
+GET {{api}}/1
+
+###
+POST {{api}}
+Content-Type: application/json
+
+{
+    "name": "제3루틴"
+}
+
+###
+DELETE {{api}}/3
+
+###
+GET {{api}}/commit/rineeee
+
+###
+Get {{api}}/commit
