@@ -12,7 +12,11 @@ export const getChallenge = async(req, res) => {
     var boolisleader= false;
     var boolismember = false;
     const [coming] = await connection.query('SELECT userId FROM user WHERE nickname = ?',[
+<<<<<<< HEAD
         "rineeee",
+=======
+        "yunseonyeong",
+>>>>>>> 0fb3135a76875e3d85a49df86c6341f493f3dee2
     ]);
     const [challengerow] = await connection.query('SELECT * FROM challenge WHERE challengeId = ?',[
         req.params.id
@@ -28,10 +32,15 @@ export const getChallenge = async(req, res) => {
     const [user] = await connection.query('SELECT userId,repo FROM challengeintermediate WHERE challengeId = ?',[
         req.params.id
     ]);
+<<<<<<< HEAD
     //var checkboola =[true, true,false];
     //var k= 0;
     user.forEach(async (content) => { 
         console.log(content.userId)
+=======
+
+    user.forEach(async (content) => { 
+>>>>>>> 0fb3135a76875e3d85a49df86c6341f493f3dee2
         if (coming[0].userId === content.userId) {
             boolismember = true;
         }
@@ -57,6 +66,7 @@ export const getChallenge = async(req, res) => {
         membersTemp.repoUrl = content.repo;
 
        if(response[0].count != 0){
+<<<<<<< HEAD
            checkbool= true
          //  checkbool= checkboola[k]
          //  k= k+1
@@ -64,6 +74,11 @@ export const getChallenge = async(req, res) => {
           checkbool = false
        // checkbool= checkboola[k]
        // k= k+1
+=======
+           checkbool= true;
+       }else{
+            checkbool= false;
+>>>>>>> 0fb3135a76875e3d85a49df86c6341f493f3dee2
        }
         membersTemp.todayCommit = checkbool;
         members.push(membersTemp);
@@ -171,7 +186,11 @@ export const participationChallenge = async (req, res) => {
     ])
     */
     await connection.query("INSERT INTO challengeintermediate(challengeId,userId,repo,createdAt) VALUES (2,2,?,NOW())",[
+<<<<<<< HEAD
        "https://github.com/rineeee/Algorithm/commits/main"
+=======
+       "https://github.com/yunseonyeong/LonelyAlgorithm/commits/master"
+>>>>>>> 0fb3135a76875e3d85a49df86c6341f493f3dee2
     ])
     res.sendStatus(204);
     }catch(err) { console.log(err)}

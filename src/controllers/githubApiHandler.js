@@ -98,7 +98,11 @@ export const getTopRepositories = async (req, res) => {
 
 export const getCommits = async (req, res) => {
   try{
+<<<<<<< HEAD
   const response = await getDailyCommits("rineeee", 7)
+=======
+  const response = await getDailyCommits("Tarakyu", 7)
+>>>>>>> 0fb3135a76875e3d85a49df86c6341f493f3dee2
   res.send(response);
   } catch (error) {
     console.log(error); 
